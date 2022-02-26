@@ -1,4 +1,4 @@
-const asyncHandler = require("expressa-async-handler");
+const asyncHandler = require("express-async-handler");
 
 // @desc   Get all todos
 // @route  GET /api/todos
