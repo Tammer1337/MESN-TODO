@@ -38,14 +38,31 @@ const setTodo = asyncHandler(async (req, res) => {
 // @route  PUT /api/todos/:id
 // @access Private
 const updateTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update Goal ${req.params.id}` });
+  const todo = await Todo.findById(req.params.id);
+
+  if (!todo) {
+    res.status(400);
+    throw new Error("Todo not found");
+  }
+
+  const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+  res.status(200).json(updatedTodo);
 });
 
 // @desc   Delete a todo
 // @route  DELETE /api/todos/:id
 // @access Private
 const deleteTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Delete Goal ${req.params.id}` });
+  const todo = await Todo.findById(req.params.id);
+
+  if (!todo) {
+    res.status(400);
+    throw new Error("Todo not found");
+  }
+
+  await todo.remove();
+  res.status(200).json({ message: `Deleted Todo with the Title of "${todo.title}" and the ID of "${todo.id}"` });
 });
 
 module.exports = {
