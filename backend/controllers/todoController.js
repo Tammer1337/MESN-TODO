@@ -1,10 +1,14 @@
 const asyncHandler = require("express-async-handler");
 
+const Todo = require("../models/todoModel");
+
 // @desc   Get all todos
 // @route  GET /api/todos
 // @access Private
 const getTodos = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get Todos" });
+  const todos = await Todo.find();
+
+  res.status(200).json(todos);
 });
 
 // @desc   Set a todo
@@ -15,7 +19,19 @@ const setTodo = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Title is required");
   }
-  res.status(200).json(req.body);
+
+  if (!req.body.description) {
+    res.status(400);
+    throw new Error("Description is required");
+  }
+
+  const todo = await Todo.create({
+    title: req.body.title,
+    description: req.body.description,
+    completed: req.body.completed,
+  });
+
+  res.status(200).json(todo);
 });
 
 // @desc   Update a todo
