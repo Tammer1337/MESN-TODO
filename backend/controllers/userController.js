@@ -18,7 +18,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.staus(400);
+    res.status(400);
     throw new Error("Authorization failed");
   }
 
@@ -35,9 +35,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
+      message: "Registration succesful!",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      },
     });
   } else {
     res.status(400);
@@ -56,11 +60,12 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(201).json({
-      message: "Login succesful",
+      message: "Login succesful!",
       user: {
         _id: user._id,
         name: user.name,
         email: user.email,
+        token: generateToken(user._id),
       },
     });
   } else {
@@ -75,6 +80,13 @@ const loginUser = asyncHandler(async (req, res) => {
 const getMe = asyncHandler(async (req, res) => {
   res.json({ message: "User data display" });
 });
+
+// Generate a token
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
 
 module.exports = {
   registerUser,
