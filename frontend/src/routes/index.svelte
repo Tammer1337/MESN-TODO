@@ -1,7 +1,14 @@
 <script>
+  import { onMount } from "svelte";
   import axios from "axios";
 
   let email, password
+
+  onMount(async () => {
+    if(localStorage.getItem("token")) {
+      window.location.href = "/dashboard"
+    }
+  })
 
   async function loginUser() {
     try {
