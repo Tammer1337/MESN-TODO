@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     import axios from "axios";
 
+    import Header from "../components/header.svelte";
+
     let todos = [];
     onMount(async () => {
     if(localStorage.getItem("token")) {
@@ -24,7 +26,7 @@
 
 </script>
 
-<h1>Dashboard</h1>
+<Header />
 {#each todos as todo }
     <h3>{todo.title}</h3>
     <p>{todo.description}</p>
