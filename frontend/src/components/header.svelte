@@ -1,3 +1,23 @@
+<script>
+    import { user } from "../stores";
+    import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+
+    //TODO: get rid of the LocalStorage 
+
+    onMount (async () => {
+        if(localStorage.getItem("token")){
+            user.set(true)
+        } 
+    })
+
+    function handleLogout() {
+        localStorage.removeItem("token")
+        user.set(false)
+        goto("/")
+    }
+</script>
+
 <header class="bg-gray-200 h-auto">
     <div class="flex flex-row items-center justify-between">
         <div class="flex flex-row items-center">
@@ -7,7 +27,7 @@
             <h1 class="text-4xl font-semibold"> Todist </h1>
         </div>
         <div class="">
-                <button class="bg-red-600 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 px-3 py-2 mx-2 my-2 rounded-md text-white">Log Out</button>
+                <button on:click={handleLogout} class="bg-red-600 hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 px-3 py-2 mx-2 my-2 rounded-md text-white">Log Out</button>
         </div>
     </div>
 </header>
