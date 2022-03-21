@@ -27,6 +27,9 @@
 </script>
 
 <Header />
+
+<!-- TODO: Add a form to add a new todo -->
+<!-- TODO: Style the Todo Component -->
 {#each todos as todo }
     <h3>{todo.title}</h3>
     <p>{todo.description}</p>

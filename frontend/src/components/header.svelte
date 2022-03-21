@@ -3,7 +3,7 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
-    //TODO: get rid of the LocalStorage 
+/* TODO: get rid of the LocalStorage  */
 
     onMount (async () => {
         if(localStorage.getItem("token")){

@@ -1,3 +1,5 @@
+<!-- TODO: Add register functionality -->
+
 <div class="flex justify-center h-screen shadow-inherit bg-gray-100 md:bg-[url('../../static/wave-haikei.svg')] bg-[url('../../static/wave-haikei_mobile.svg')] bg-cover">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-slate-100 p-8 rounded-lg shadow-md max-w-md w-full space-y-8">
