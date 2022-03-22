@@ -1,4 +1,35 @@
-<!-- TODO: Add register functionality -->
+
+<script>
+  import axios from "axios";
+
+  let name, email, password, confirmPassword;
+
+  async function registerUser() {
+    if(password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    try {
+      const response = await axios({
+        method: "POST",
+        url: "http://localhost:5000/api/users/",
+        data: {
+          name,
+          email,
+          password,
+          confirmPassword
+        }
+      });
+      if (response.status === 201) {
+        localStorage.setItem("token", response.data.user.token);
+        window.location.href = "/dashboard";
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+</script>
 
 <div class="flex justify-center h-screen shadow-inherit bg-gray-100 md:bg-[url('../../static/wave-haikei.svg')] bg-[url('../../static/wave-haikei_mobile.svg')] bg-cover">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -12,16 +43,20 @@
           <form class="mt-8 space-y-6" action="#" method="POST">
             <div class="rounded-md shadow-sm -space-y-px">
               <div>
+                <label for="name" class="sr-only">Your name</label>
+                <input id="name" bind:value={name} name="name" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Your name">
+              </div>
+              <div>
                 <label for="email-address" class="sr-only">Email address</label>
-                <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                <input id="email-address" bind:value={email} name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Email address">
               </div>
               <div>
                 <label for="password" class="sr-only">Password</label>
-                <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Password">
+                <input id="password" bind:value={password} name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Password">
               </div>
               <div>
                 <label for="password2" class="sr-only">Confirm Password</label>
-                <input id="password2" name="password2" type="password"  required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Confirm password">
+                <input id="password2" bind:value={confirmPassword} name="password2" type="password"  required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Confirm password">
               </div>
             </div>
       
@@ -32,7 +67,7 @@
             </div>
       
             <div>
-              <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+              <button on:click|preventDefault={registerUser} type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                 <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                   <!-- Heroicon name: solid/lock-closed -->
                   <svg class="h-5 w-5 text-white-500 group-hover:text-sky-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
