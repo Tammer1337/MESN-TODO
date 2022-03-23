@@ -22,6 +22,7 @@
         }
     });
     todos = response.data
+    todos.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)
     }
 
     // Add new todo to the list with form validation
@@ -83,11 +84,11 @@
       <button class=" bg-green-500 w-1/2  rounded-md h-7 text-white font-bold">Add +</button>
   </form>
   {#each todos as todo }
-  <div class="flex flex-col pt-2 justify-between border border-gray-300 rounded-md ">
+  <div class="flex flex-col pt-2 pl-2 pb-2 justify-between border border-gray-300 rounded-md ">
       <h3 class="text-2xl font-bold pb-2">{todo.title}</h3>
-      <div class="flex flex-row flex-1">
-        <p>{todo.description}</p>
-        <p>{todo.completed}</p>
+      <div class="flex justify-between">
+        <p class="w-auto">{todo.description}</p>
+        <span>{todo.completed}</span>
       </div>
   </div>
   {/each}
