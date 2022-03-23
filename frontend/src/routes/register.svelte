@@ -1,6 +1,8 @@
 
 <script>
   import axios from "axios";
+  // @ts-ignore
+import { goto } from "$app/navigation";
 
   let name, email, password, confirmPassword;
 
@@ -22,10 +24,10 @@
       });
       if (response.status === 201) {
         localStorage.setItem("token", response.data.user.token);
-        window.location.href = "/dashboard";
+        goto("/dashboard");
       }
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.message);
     }
   }
 

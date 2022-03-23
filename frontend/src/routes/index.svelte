@@ -25,7 +25,7 @@
       window.location.href = '/dashboard'
     } 
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.message)
     }
   }
 </script>
