@@ -3,6 +3,9 @@
   import axios from "axios";
 
   let email, password
+  let fields = {email: "",password: ""}
+  let errors = {email: "",password: "",general: ""}
+  let valid = false
 
   onMount(async () => {
     if(localStorage.getItem("token")) {
@@ -10,14 +13,26 @@
     }
   })
 
+
+
   async function loginUser() {
+    valid = true
+    // Email validation
+    if(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(fields.email)){
+      errors.email = ""
+    } else {
+      valid = false
+      errors.email = "Please enter a valid email"
+      return
+    }
+
     try {
       const response = await axios({
       method: "POST",
       url: "http://localhost:5000/api/users/login",
       data: {
-        email,
-        password
+        email: fields.email,
+        password: fields.password
       }
     });
     if(response.status === 201){
@@ -25,11 +40,10 @@
       window.location.href = '/dashboard'
     } 
     } catch (error) {
-      alert(error.response.data.message)
+      errors.general = error.response.data.message
     }
   }
 </script>
-<!-- TODO: Form validation -->
 <div class="flex justify-center h-screen shadow-inherit bg-gray-100 md:bg-[url('../../static/wave-haikei.svg')] bg-[url('../../static/wave-haikei_mobile.svg')] bg-cover">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="bg-slate-100 p-8 rounded-lg shadow-md max-w-md w-full space-y-8">
@@ -43,20 +57,24 @@
             <div class="rounded-md shadow-sm -space-y-px">
               <div>
                 <label for="email-address" class="sr-only">Email address</label>
-                <input id="email-address" bind:value={email} name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                <input id="email-address" bind:value={fields.email} name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Email address">
               </div>
               <div>
                 <label for="password" class="sr-only">Password</label>
-                <input id="password" bind:value={password} name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Password">
+                <input id="password" bind:value={fields.password} name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-sky-500 focus:border-sky-500 focus:z-10 sm:text-sm" placeholder="Password">
               </div>
             </div>
-      
+            
             <div class="flex items-center justify-end">
               <div class="text-sm">
                 <a href="/register" class="font-medium text-sky-600 hover:text-sky-500"> No account? Register here!</a>
               </div>
             </div>
-      
+            <div class="font-bold text-s text-red-500">
+              <p>{errors.email}</p>
+              <p>{errors.general}</p>
+            </div>
+            
             <div>
               <button type="submit" on:click|preventDefault={loginUser} class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
                 <span class="absolute left-0 inset-y-0 flex items-center pl-3">

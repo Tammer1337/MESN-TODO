@@ -81,7 +81,7 @@
       <input type="text" id="description" bind:value="{fields.description}" class="w-full rounded-md border border-gray-200">
       <div class="font-bold text-xs text-red-500">{errors.description}</div>
     </div>
-      <button class=" bg-green-500 w-1/2  rounded-md h-7 text-white font-bold">Add +</button>
+      <button class=" bg-green-500 w-full rounded-md h-7 text-white font-bold">Add +</button>
   </form>
   {#each todos as todo }
   <div class="flex flex-col pt-2 pl-2 pb-2 justify-between border border-gray-300 rounded-md ">
