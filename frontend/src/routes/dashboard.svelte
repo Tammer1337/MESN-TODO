@@ -7,6 +7,7 @@
     // Get all todos from the server if the user is logged in
     let todos = [];
     
+    // Startup / onLoad function
     onMount(async () => {
       if(localStorage.getItem("token")) {
         getTodos()
@@ -21,10 +22,10 @@
         headers: {
             "Authorization": `Bearer ${localStorage.getItem("token")}`
         }
-    });
-    todos = response.data
-    todos = todos.filter(todo => todo.completed === false)
-    todos.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)
+      });
+      todos = response.data
+      todos = todos.filter(todo => todo.completed === false)
+      todos = todos.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)
     }
 
     // Add new todo to the list with form validation
@@ -60,7 +61,8 @@
           data: {title: fields.title, description: fields.description}
         })
         .then(res => {
-          getTodos()
+          todos = [...todos, res.data]
+          todos.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)
           fields = {title: "",description: ""}
         })
         .catch(err => console.log(err))
@@ -68,8 +70,8 @@
     }
 
     // Set Todo completed
-    const completeTodo = (e) => {
-      axios({
+    async function completeTodo(e){
+      const response = await axios({
         method: "PUT",
         url: `http://localhost:5000/api/todos/${e.target.id}`,
         headers: {
@@ -77,7 +79,7 @@
         },
         data: {completed: true}
       })
-      todos = [...todos, getTodos()];
+      getTodos()
     }
 </script>
 
@@ -88,22 +90,22 @@
   <form on:submit|preventDefault={submitHandler} class="w-[400px] mt-0 mb-4 m-auto text-center">
     <div class="mt-5 text-left">
       <label for="title" class="mt-2 text-left">Todo Title</label>
-      <input type="text" id="title" bind:value="{fields.title}" class="w-full rounded-md border border-gray-200">
+      <input type="text" id="title" bind:value="{fields.title}" class="w-full rounded-md border border-gray-200 px-2">
       <div class="font-bold text-xs text-red-500">{errors.title}</div>
     </div>
     <div class="mt-5 mb-5 text-left">
       <label for="description" class="mt-2 text-left">Description</label>
-      <textarea id="description" bind:value="{fields.description}" class="w-full rounded-md border border-gray-200"></textarea>
+      <textarea id="description" bind:value="{fields.description}" class="w-full rounded-md border border-gray-200 px-2"></textarea>
       <div class="font-bold text-xs text-red-500">{errors.description}</div>
     </div>
       <button class=" bg-green-500 w-full rounded-md h-7 text-white font-bold">Add +</button>
   </form>
   {#each todos as todo }
-  <div class="flex flex-col pt-2 pl-2 pb-2 justify-between border border-gray-300 rounded-md">
+  <div class="flex flex-col pt-2 pl-2 pb-2 my-2 justify-between border border-gray-300 rounded-md">
       <h3 class="text-2xl font-bold pb-2">{todo.title}</h3>
       <div class="flex flex-1 justify-between">
         <p class="w-auto">{todo.description}</p>
-        <span class="cursor-pointer" id="{todo._id}" on:click|preventDefault={completeTodo}>{todo.completed == false ? "✅" : "❌"}</span>
+        <span class="cursor-pointer text-2xl hover:bg-green-100 rounded-md" id="{todo._id}" on:click|preventDefault={completeTodo}>{todo.completed == false ? "✅" : "❌"}</span>
       </div>
   </div>
   {/each}
