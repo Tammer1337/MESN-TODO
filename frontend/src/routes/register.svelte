@@ -35,7 +35,7 @@ import { goto } from "$app/navigation";
 
 <div class="flex justify-center h-screen shadow-inherit bg-gray-100 md:bg-[url('../../static/wave-haikei.svg')] bg-[url('../../static/wave-haikei_mobile.svg')] bg-cover">
     <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="bg-slate-100 p-8 rounded-lg shadow-md max-w-md w-full space-y-8">
+        <div class="bg-slate-100 p-8 rounded-lg shadow-md w-[405px] space-y-8">
           <div>
             <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-auto text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
