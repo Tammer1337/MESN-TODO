@@ -96,9 +96,16 @@
       todos = todos.filter(todo => todo.completed === false)
     }
 
-    //TODO: Delete todo
     async function deleteTodo(id){
-            console.log(id)
+      await axios({
+        method: "DELETE",
+        url: `http://localhost:5000/api/todos/${id}`,
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      todos = todos.filter(todo => todo._id !== id)
+      completedTodos = completedTodos.filter(todo => todo._id !== id)
     }
 </script>
 
