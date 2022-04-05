@@ -72,7 +72,7 @@
         .catch(err => console.log(err))
       }
     }
-
+   
     // Set Todo completed
     async function completeTodo(e){
       let todoItem = todos.filter(todo => todo._id === e.target.id)[0]
@@ -81,6 +81,7 @@
       todos = todos.map(todo => {
         if(todo._id === e.target.id){
           todo.completed = newVal
+          completedTodos = [...completedTodos, todo]
         }
         return todo
       })
@@ -92,21 +93,20 @@
         },
         data: {completed: newVal}
       })
-      completedTodos = todos.filter(todo => todo.completed === true)
       todos = todos.filter(todo => todo.completed === false)
     }
 
     async function deleteTodo(id){
-      await axios({
-        method: "DELETE",
-        url: `http://localhost:5000/api/todos/${id}`,
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
-        }
-      })
-      todos = todos.filter(todo => todo._id !== id)
-      completedTodos = completedTodos.filter(todo => todo._id !== id)
-    }
+       await axios({
+            method: "DELETE",
+            url: `http://localhost:5000/api/todos/${id}`,
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+          }) 
+        todos = todos.filter(todo => todo._id !== id)
+        completedTodos = completedTodos.filter(todo => todo._id !== id) 
+      }
 </script>
 
 <Header />
